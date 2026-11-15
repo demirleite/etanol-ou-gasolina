@@ -88,11 +88,11 @@
     <div class="grid grid-cols-2 gap-3">
       <div class="flex flex-col gap-1">
         <label for="pGas" class="text-sm font-bold" style="color:var(--gas)">Gasolina</label>
-        <input id="pGas" class="field" inputmode="decimal" placeholder="6,19" autocomplete="off">
+        <input id="pGas" class="field" inputmode="decimal" autocomplete="off">
       </div>
       <div class="flex flex-col gap-1">
         <label for="pEta" class="text-sm font-bold" style="color:var(--accent)">Etanol</label>
-        <input id="pEta" class="field" inputmode="decimal" placeholder="4,29" autocomplete="off">
+        <input id="pEta" class="field" inputmode="decimal" autocomplete="off">
       </div>
     </div>
   </section>
@@ -143,8 +143,8 @@ function montarLista() {
   $("carro").innerHTML = carros.map((c, i) => `<option value="${i}">${c.nome}</option>`).join("");
   const salvo = parseInt(store.get("carro"), 10);
   if (salvo >= 0 && salvo < carros.length) $("carro").value = salvo;
-  $("pGas").value = store.get("pGas") || "";
-  $("pEta").value = store.get("pEta") || "";
+  $("pGas").placeholder = store.get("pGas") || "";
+  $("pEta").placeholder = store.get("pEta") || "";
 }
 
 function setUso(u) {
@@ -166,7 +166,8 @@ function calcular() {
     `<div>Etanol: <b>${n1(kmEta)} km/l</b> (${uso})</div>`;
 
   const pGas = parsePreco($("pGas").value), pEta = parsePreco($("pEta").value);
-  store.set("pGas", $("pGas").value); store.set("pEta", $("pEta").value);
+  if ($("pGas").value) store.set("pGas", $("pGas").value);
+  if ($("pEta").value) store.set("pEta", $("pEta").value);
   const out = $("resultado");
 
   if (!pGas || !pEta) {
